@@ -1,0 +1,270 @@
+<?php
+
+namespace AppBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+/**
+ * AppBundle\Document\Profile
+ *
+ * @ODM\Document(collection="profile")
+ * @ODM\ChangeTrackingPolicy("DEFERRED_IMPLICIT")
+ */
+class Profile {
+
+    /**
+     * @var MongoId $id
+     *
+     * @ODM\Id(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string $firstName
+     *
+     * @ODM\Field(name="firstName", type="string")
+     */
+    protected $firstName;
+
+    /**
+     * @var string $lastName
+     *
+     * @ODM\Field(name="lastName", type="string")
+     */
+    protected $lastName;
+
+    /**
+     * @var string $gender
+     *
+     * @ODM\Field(name="gender", type="string")
+     */
+    protected $gender;
+
+    /**
+     * @var string $email
+     *
+     * @ODM\Field(name="email", type="string")
+     */
+    protected $email;
+
+    /**
+     * @var string $contact
+     *
+     * @ODM\ReferenceMany(targetDocument="Contact", cascade="all") 
+     */
+    protected $contact = array();
+
+    /**
+     * @var string $address
+     *
+
+     *  @ODM\ReferenceMany(targetDocument="UserAddress", cascade="all") 
+     */
+    protected $address = array();
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return self
+     */
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string $firstName
+     */
+    public function getFirstName() {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return self
+     */
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string $lastName
+     */
+    public function getLastName() {
+        return $this->lastName;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     * @return self
+     */
+    public function setGender($gender) {
+        $this->gender = $gender;
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string $gender
+     */
+    public function getGender() {
+        return $this->gender;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return self
+     */
+    public function setEmail($email) {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string $email
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     * @return self
+     */
+    public function setContact(UserContact $contact) {
+        $this->contact = $contact;
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string $contact
+     */
+    public function getContact() {
+        return $this->contact;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return self
+     */
+    public function setAddress(UserAddress $address) {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string $address
+     */
+    public function getAddress() {
+        return $this->address;
+    }
+
+}
+
+/** @ODM\EmbeddedDocument */
+class UserAddress {
+
+    /** @ODM\Field(type="string") */
+    protected $street;
+
+    /** @ODM\Field(type="string") */
+    protected $city;
+
+    /** @ODM\Field(type="string") */
+    protected $country;
+
+    /** @ODM\Field(type="string") */
+    protected $zipcode;
+
+    public function getStreet() {
+        return $this->street;
+    }
+
+    public function setStreet($street) {
+        return $this->street = $street;
+    }
+
+    public function setCity($city) {
+        return $this->street = $city;
+    }
+
+    public function getCity() {
+        return $this->street;
+    }
+
+    public function setCountry($country) {
+        return $this->country = $country;
+    }
+
+    public function getCountry() {
+        return $this->country;
+    }
+
+    public function setZipcode($zipcode) {
+        return $this->zipcode = $zipcode;
+    }
+
+    public function getZipcode() {
+        return $this->zipcode;
+    }
+
+}
+
+/** @ODM\EmbeddedDocument */
+class UserContact {
+
+    /** @ODM\Field(type="boolean") */
+    protected $isDefault;
+
+    /** @ODM\Field(type="string") */
+    protected $phoneNumber;
+
+    public function setIsdefault($isDefault) {
+        return $this->isDefault = $isDefault;
+    }
+
+    public function getIsdefault() {
+        return $this->isDefault;
+    }
+
+    public function setPhoneNumber($phoneNumber) {
+        return $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
+    }
+
+}
