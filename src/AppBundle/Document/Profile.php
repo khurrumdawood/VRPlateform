@@ -4,25 +4,20 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Helper\MapperHelper;
 
 /**
  * AppBundle\Document\Profile
  *
  * @ODM\Document(collection="profile")
  */
-class Profile {
+class Profile extends Base{
 
     public function __construct() {
         $this->addresses = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
 
-    /**
-     * @var MongoId $id
-     *
-     * @ODM\Id(strategy="AUTO")
-     */
-    protected $id;
 
     /**
      * @var string $firstName
@@ -63,14 +58,7 @@ class Profile {
      */
     protected $addresses = array();
 
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId() {
-        return $this->id;
-    }
+   
 
     /**
      * Set firstName
@@ -223,6 +211,6 @@ class Profile {
     public function removeAddress(Address $address) {
         $this->addresses->removeElement($address);
     }
-
+   
 }
 
