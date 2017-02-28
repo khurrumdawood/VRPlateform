@@ -19,6 +19,9 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
 //            new AntiMattr\Bundle\MongoDBMigrationsBundle\MongoDBMigrationsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+             new BCC\AutoMapperBundle\BCCAutoMapperBundle(),
+              new FOS\RestBundle\FOSRestBundle(),
+            
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

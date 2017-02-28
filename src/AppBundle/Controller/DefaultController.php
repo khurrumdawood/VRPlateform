@@ -45,7 +45,7 @@ class DefaultController extends Controller {
      */
     public function createprofileAction() {
 
-        //$profile = $this->get('doctrine_mongodb')->getManager()->getRepository('AppBundle:Profile')->findOneById('58abebbd29c39fec15000029');
+        $profile = $this->get('doctrine_mongodb')->getManager()->getRepository('AppBundle:Profile')->findOneById('58abebbd29c39fec15000029');
 //
 //        $contacts = $dm->getContact();
 //        foreach ($contacts as $contact) {

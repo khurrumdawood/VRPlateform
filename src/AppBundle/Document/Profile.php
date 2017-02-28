@@ -4,6 +4,7 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Helper\MapperHelper;
 
 /**
  * AppBundle\Document\Profile
@@ -13,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Profile {
 
     public function __construct() {
+        
         $this->addresses = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
@@ -22,46 +24,46 @@ class Profile {
      *
      * @ODM\Id(strategy="AUTO")
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string $firstName
      *
      * @ODM\Field(name="firstName", type="string")
      */
-    protected $firstName;
+    public $firstName;
 
     /**
      * @var string $lastName
      *
      * @ODM\Field(name="lastName", type="string")
      */
-    protected $lastName;
+    public $lastName;
 
     /**
      * @var string $gender
      *
      * @ODM\Field(name="gender", type="collection")
      */
-    protected $gender ;
+    public $gender;
 
     /**
      * @var string $email
      *
      * @ODM\Field(name="email", type="string")
      */
-    protected $email;
+    public $email;
 
     /**
      *
      * @ODM\EmbedMany(targetDocument="Contact") 
      */
-    protected $contacts = array();
+    public $contacts = array();
 
     /**
      * @ODM\EmbedMany(targetDocument="Address") 
      */
-    protected $addresses = array();
+    public $addresses = array();
 
     /**
      * Get id
@@ -158,10 +160,10 @@ class Profile {
      * @return self
      */
     public function setContacts($contacts) {
-        $this->contacts=$contacts;
+        $this->contacts = $contacts;
         return $this;
     }
-    
+
     /**
      * Get contact
      *
@@ -178,7 +180,7 @@ class Profile {
         $this->addresses = $addresses;
         return $this;
     }
-    
+
     /**
      * Get address
      *
@@ -224,5 +226,8 @@ class Profile {
         $this->addresses->removeElement($address);
     }
 
-}
+    public function toDTO($dto) {
+        return MapperHelper::getMapper()->docToDto($this, $dto);
+    }
 
+}
