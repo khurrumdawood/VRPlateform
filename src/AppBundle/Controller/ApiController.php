@@ -27,6 +27,17 @@ class ApiController extends Controller {
     }
 
     /**
+     * @Route("/getAllProfiles")
+     */
+    public function getAllProfilesAction() {
+
+        $service = $this->container->get('app_users');
+        $dtos = $service->getAllProfiles();
+        print_r($dtos);
+        exit;
+    }
+
+    /**
      * @Route("/update")
      */
     public function updateAction(Request $request) {
@@ -80,13 +91,13 @@ class ApiController extends Controller {
         $mapper->createMap('AppBundle\Document\Product', 'AppBundle\Shared\DTO\ProductDTO');
 
         $source = new Product();
-        $source->firstname = 'Symfony2 developer';
+        $source->setFirstname('Symfony2 developer');
 
         $destination = new ProductDTO();
 
         $mapper->map($source, $destination);
 
-        echo $destination->firstname; // outputs 'Symfony2 developer'
+        echo $destination->getFirstName(); // outputs 'Symfony2 developer'
 
         exit;
 
@@ -109,10 +120,27 @@ class ApiController extends Controller {
         $destination = new ProfileMainDTO();
         $mapper->map($source, $destination);
         echo $destination->firstName; // outputs 'Symfony2 developer'
-
-       
-
         // print_r($dto);
+        exit;
+    }
+
+    /**
+     * @Route("/getProfileById")
+     */
+    public function getProfileByIdAction(Request $request) {
+        $service = $this->container->get('app_users');
+        print_r($service->getProfileById($request->get('id')));
+        exit;
+    }
+
+    /**
+     * @Route("/setProfileBy")
+     */
+    public function setProfileByAction(Request $request) {
+        $dto = new ProfileMainDTO();
+        $dto = MapperHelper::getMapper()->jsonToDTO($request->get('profile'), $dto);
+        $service = $this->container->get('app_users');
+        print_r($service->setProfileBy($dto));
         exit;
     }
 

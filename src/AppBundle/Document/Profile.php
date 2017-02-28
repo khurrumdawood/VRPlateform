@@ -11,7 +11,7 @@ use AppBundle\Helper\MapperHelper;
  *
  * @ODM\Document(collection="profile")
  */
-class Profile {
+class Profile extends Base{
 
     public function __construct() {
         
@@ -19,12 +19,15 @@ class Profile {
         $this->contacts = new ArrayCollection();
     }
 
+
     /**
      * @var MongoId $id
      *
      * @ODM\Id(strategy="AUTO")
      */
     public $id;
+
+
 
     /**
      * @var string $firstName
@@ -65,14 +68,7 @@ class Profile {
      */
     public $addresses = array();
 
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId() {
-        return $this->id;
-    }
+   
 
     /**
      * Set firstName
@@ -226,8 +222,13 @@ class Profile {
         $this->addresses->removeElement($address);
     }
 
+
     public function toDTO($dto) {
         return MapperHelper::getMapper()->docToDto($this, $dto);
     }
 
+   
 }
+
+
+

@@ -4,6 +4,10 @@ namespace AppBundle\Services;
 
 use AppBundle\Shared\Mapper\UserMapper;
 //Helper Classes
+use Doctrine\ODM\MongoDB\DocumentManager;
+use AppBundle\Core\DocProvider;
+use AppBundle\Shared\DTO\CredentialDTO;
+use AppBundle\Shared\DTO\ProfileMainDTO;
 use AppBundle\Helper\MapperHelper;
 //Document Classes
 use AppBundle\Document\User;
@@ -11,11 +15,10 @@ use AppBundle\Document\Profile;
 use AppBundle\Document\Product;
 use AppBundle\Document\Address;
 use AppBundle\Document\Contact;
-use AppBundle\Shared\DTO\ProfileMainDTO;
 use AppBundle\Core\Concreate\DocProvider;
 use AppBundle\Services\BaseService;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use AppBundle\Shared\DTO\ProductDTO;
+use AppBundle\Services\MongoService;
 
 //use Papper\Papper;
 //use Papper\MemberOption\Ignore;
@@ -24,25 +27,42 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class UserService {
 
-    private $provider;
+    private $repoProvider;
 
-    public function setManager(DocumentManager $manager) {
-
-        $this->provider = DocProvider::init($manager);
+    public function __construct(MongoService $mongoService) {
+        $this->repoProvider = $mongoService;
     }
 
     public function getAllUsers() {
-        echo "user service";
-        $users = $this->provider->Users()->findAll();
 
-        exit;
+       
         //return MapperHelper::getMapper()->getDTOs($users); // tomorrow first priority.      
+
+        $users = $this->repoProvider->Users()->findAll();
+        return MapperHelper::getMapper()->getDTOs($users); // tomorrow first priority. 
+    }
+
+    public function getAllProfiles() {
+        $profiles = $this->repoProvider->Profiles()->findAll();
+        return MapperHelper::getMapper()->getDTOs($profiles); // tomorrow first priority. 
+        exit;
     }
 
     public function getProfileById($id) {
-        $profile = $this->provider->Profiles()->find($id);
-        return $profile->toDTO(new ProfileMainDTO());
+        $profile = $this->repoProvider->Profiles()->find($id);
+        $dto = new ProfileMainDTO();
+        return $profile->toDTO($dto); // tomorrow first priority. 
     }
+
+    public function setProfileBy($dto) {
+        $profile = $this->repoProvider->Profiles()->find($dto->id);
+        return $this->repoProvider->flush($dto->toDoc($profile));
+    }
+
+//    public function getProfileById($id) {
+//        $profile = $this->provider->Profiles()->find($id);
+//        return $profile->toDTO(new ProfileMainDTO());
+//    }
 
     public function search(ProfileFilterDTO $dto) {
         //$users = $this->documentManager->getRepository('AppBundle:User')->findAll();
@@ -50,6 +70,7 @@ class UserService {
     }
 
     public function updateCredential(CredentialDTO $dto) {
+
         $user = $this->manager->Users()->find($dto->id);
         $this->manager->flush(MapperHelper::getMapper()->dtoToDoc($dto, $user));
     }
@@ -125,6 +146,9 @@ class UserService {
         echo $destination->description; // outputs 'Symfony2 developer'
 
         exit;
+
+        $user = $this->repoProvider->Users()->find($dto->id);
+        $this->repoProvider->flush(MapperHelper::getMapper()->dtoToDoc($dto, $user));
     }
 
 }

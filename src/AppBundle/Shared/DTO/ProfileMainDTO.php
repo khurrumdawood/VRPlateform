@@ -2,6 +2,8 @@
 
 namespace AppBundle\Shared\DTO;
 
+use AppBundle\Shared\DTO\BaseDTO;
+
 class ProfileMainDTO extends BaseDTO {
 
     public function __construct() {
@@ -34,5 +36,4 @@ class ProfileMainDTO extends BaseDTO {
 //    public function getLastName() {
 //        return $this->lastName;
 //    }
-
 }

@@ -60,6 +60,7 @@ final class MapperHelper {
     }
 
     private function mergeData($src, $dest, $obj) {
+        
         $newMerge = $this->serializer->serialize(array_merge(json_decode($dest, true), json_decode($src, true)), 'json');
         return $this->serializer->deserialize($newMerge, $obj->getSelf(), 'json', array('object_to_populate' => $obj));
     }
